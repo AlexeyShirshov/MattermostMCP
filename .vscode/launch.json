@@ -1,0 +1,35 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "MCP Server (Local)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/McpServer/bin/Debug/net10.0/MattermostMCP.McpServer.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/McpServer",
+      "stopAtEntry": false,
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Local",
+        "ASPNETCORE_URLS": "http://127.0.0.1:8085"
+      },
+      "sourceFileMap": {
+        "/Views": "${workspaceFolder}/Views"
+      }
+    },
+    {
+      "name": "MCP Server (Development)",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/McpServer/bin/Debug/net10.0/MattermostMCP.McpServer.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/McpServer",
+      "stopAtEntry": false,
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://127.0.0.1:8085"
+      }
+    }
+  ]
+}

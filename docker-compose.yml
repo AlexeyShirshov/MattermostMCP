@@ -1,0 +1,45 @@
+services:
+  mattermost:
+    build:
+      context: .
+      dockerfile: mattermost-v7.Dockerfile
+    image: mattermost-preview:local
+    container_name: mattermost
+    restart: unless-stopped
+    # Host networking avoids a bug in docker-compose's Docker-API port publishing
+    # under podman (responses were lost); reachable from Windows via WSL localhost.
+    network_mode: host
+    environment:
+      MM_SERVICESETTINGS_SITEURL: "http://localhost:8080"
+      MM_SERVICESETTINGS_LISTENADDRESS: ":8080"
+      MM_SERVICESETTINGS_ENABLEDEVELOPER: "true"
+      MM_SERVICESETTINGS_ENABLELOCALMODE: "true"
+      MM_SERVICESETTINGS_LOCALMODESOCKETLOCATION: "/var/tmp/mattermost_local.socket"
+      MM_SERVICESETTINGS_ENABLEOPENSERVER: "true"
+      MM_TEAMSETTINGS_ENABLEOPENSERVER: "true"
+      MM_SERVICEENVIRONMENT: "test"
+      MM_SQLSETTINGS_DRIVERNAME: "postgres"
+      MM_SQLSETTINGS_DATASOURCE: "postgres://mmuser:mmuser@localhost:5432/mattermost?sslmode=disable&connect_timeout=10"
+      MM_FILESETTINGS_DRIVERNAME: "local"
+      MM_LOGSETTINGS_CONSOLELEVEL: "DEBUG"
+      MM_EMAILSETTINGS_SENDEMAILNOTIFICATIONS: "false"
+      MM_EMAILSETTINGS_REQUIREEMAILVERIFICATION: "false"
+    volumes:
+      - ./data/mattermost/config:/mattermost/config
+      - ./data/mattermost/data:/mattermost/data
+      - ./data/mattermost/logs:/mattermost/logs
+      - ./data/mattermost/plugins:/mattermost/plugins
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: mattermost-postgres
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      POSTGRES_USER: mmuser
+      POSTGRES_PASSWORD: mmuser
+      POSTGRES_DB: mattermost
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
