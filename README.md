@@ -4,6 +4,15 @@ MCP-сервер, который отдаёт **followed threads** пользо�
 искать по ним. Реализован на ASP.NET Core и работает с Mattermost REST API v4
 напрямую (локальный клиент `MmDesktop`, внешний сервис не требуется).
 
+## Документация
+
+| Документ | О чём |
+| --- | --- |
+| [docs/quickstart.md](docs/quickstart.md) | Как устроен MCP в проекте: транспорт, `initialize` / `tools/list` / `tools/call`, обработка ошибок |
+| [docs/HOWTO_LOCAL_E2E.md](docs/HOWTO_LOCAL_E2E.md) | Локальный запуск Mattermost и сервера, проверка инструментов |
+| [AGENTS.md](AGENTS.md) | Конвенции, форматирование (CRLF), сборка, тесты и покрытие |
+| [docs/Coding_Conventions.md](docs/Coding_Conventions.md) | Полный свод правил кода (C# / SQL / общее) |
+
 ## MCP-инструменты
 
 | Инструмент | Назначение | Параметры |
@@ -89,7 +98,7 @@ Mattermost-login. В окружении `Local` авторизация откл�
 
 ## Локальный запуск
 
-См. [HOWTO_LOCAL_E2E.md](HOWTO_LOCAL_E2E.md).
+См. [docs/HOWTO_LOCAL_E2E.md](docs/HOWTO_LOCAL_E2E.md).
 
 ## Соглашения
 
@@ -97,4 +106,4 @@ Mattermost-login. В окружении `Local` авторизация откл�
 null-проверок, `_camelCase` для приватных полей, `DateTimeOffset`, `Async`-суффиксы,
 `CancellationToken` полностью, логи с префиксом `Log`, `sealed`/`record` для DTO.
 
-Полный свод правил: [Соглашения по коду (C# / SQL / Общее)](Coding_Conventions.md).
+Полный свод правил: [Соглашения по коду (C# / SQL / Общее)](docs/Coding_Conventions.md).

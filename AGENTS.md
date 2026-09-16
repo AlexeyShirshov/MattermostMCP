@@ -2,8 +2,9 @@
 
 ## Конвенции
 
-- Соглашения по коду (C# / SQL / общее): [Coding_Conventions.md](Coding_Conventions.md)
+- Соглашения по коду (C# / SQL / общее): [docs/Coding_Conventions.md](docs/Coding_Conventions.md)
 - Правила стиля, анализаторов и форматирования: [.editorconfig](.editorconfig)
+- Как устроен MCP в проекте: [docs/quickstart.md](docs/quickstart.md)
 
 ## Форматирование
 
@@ -20,4 +21,4 @@
 
 ## Локальный запуск
 
-- Пошаговый сценарий: [HOWTO_LOCAL_E2E.md](HOWTO_LOCAL_E2E.md).
+- Пошаговый сценарий: [docs/HOWTO_LOCAL_E2E.md](docs/HOWTO_LOCAL_E2E.md).
