@@ -16,7 +16,7 @@ C# / SQL / Общее — расшифровка с фото. Многоточи
    - метод, свойство
 4. **При именовании придерживаемся** [https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/identifier-names](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/identifier-names)
    - приватные члены начинаются с подчёркивания - implemented
-   - константы прописными буквами - doesn't violate
+   - константы и `static readonly` поля — обычный PascalCase (не подчёркивание)
    - асинхронные методы снабжаются постфиксом Async только если есть синхронный аналог - doesn't violate
    - CancellationToken называем полностью, если имя параметра не пришло из базового класса, также это правило не распространяется…
    - наименование сущностей согласно конвенции по микросервисам в единственном числе, акронимы в стиле MS (XML -> Xml) - doesn't violate

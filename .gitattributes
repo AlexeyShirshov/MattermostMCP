@@ -1,0 +1,16 @@
+# Нормализация переводов строк: в репозитории храним LF, в рабочей копии — CRLF
+# (см. .editorconfig: end_of_line = crlf).
+* text=auto eol=crlf
+
+# Бинарные файлы — не трогаем.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pfx binary
+*.dll binary
+*.exe binary
+*.zip binary
+*.tar binary
+*.gz binary

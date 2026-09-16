@@ -6,6 +6,7 @@ using MattermostMCP.MmDesktop;
 using MattermostMCP.MmDesktop.Models;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
+using NSubstitute;
 using Xunit;
 
 namespace MattermostMCP.UnitTests;
@@ -15,8 +16,9 @@ public sealed class MattermostAuthHandlerTests
     [Fact]
     public async Task AddsBearerTokenHeader()
     {
+        var httpClientFactory = Substitute.For<IHttpClientFactory>();
         var tokenProvider = new MattermostTokenProvider(
-            new UnusedHttpClientFactory(),
+            httpClientFactory,
             Options.Create(new MmDesktopOptions { Token = "test-token" }),
             NullLogger<MattermostTokenProvider>.Instance);
 
@@ -37,13 +39,7 @@ public sealed class MattermostAuthHandlerTests
         innerHandler.LastRequest.Should().NotBeNull();
         innerHandler.LastRequest!.Headers.Authorization
             .Should().Be(new AuthenticationHeaderValue("Bearer", "test-token"));
-    }
-
-    private sealed class UnusedHttpClientFactory : IHttpClientFactory
-    {
-        public HttpClient CreateClient(string name)
-            => throw new InvalidOperationException(
-                "Login client must not be created when a token is preconfigured.");
+        httpClientFactory.DidNotReceive().CreateClient(Arg.Any<string>());
     }
 }
 
@@ -69,7 +65,8 @@ public sealed class MattermostClientTests
         handler.LastRequest.Should().NotBeNull();
         handler.LastRequest!.RequestUri!.PathAndQuery
             .Should().Be(
-                "/api/v4/users/user-1/teams/team-1/threads?per_page=50&page=1&deleted=false&unread=false");
+                "/api/v4/users/user-1/teams/team-1/threads" +
+                "?per_page=50&page=1&deleted=false&unread=false");
     }
 }
 
