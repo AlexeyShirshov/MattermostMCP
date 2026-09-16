@@ -1,0 +1,19 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    "instructions/Coding_Conventions.md"
+  ],
+  "mcp": {
+    "mattermost": {
+      "type": "remote",
+      "url": "http://127.0.0.1:8085/mcp",
+      "enabled": true
+    }
+  },
+  "permission": {
+    "bash": {
+      "*": "allow",
+      "git *": "ask"
+    }
+  }
+}

@@ -28,6 +28,9 @@ public sealed partial class ThreadSearchService(
 
     private readonly ILogger<ThreadSearchService> _logger = logger;
 
+    // Длина превью найденного сообщения в ответе — см. docs/specs/followed-threads-search.md.
+    private const int MatchedMessagePreviewLength = 40;
+
     // Защита от повторного логина при конкурентных запросах: логинимся ровно один раз.
     private readonly SemaphoreSlim _authLock = new(1, 1);
     private bool _loggedIn;
@@ -224,7 +227,9 @@ public sealed partial class ThreadSearchService(
                 RootMessage = thread.Post is { Message.Length: > 500 }
                     ? thread.Post.Message[..500] + "..."
                     : thread.Post?.Message ?? string.Empty,
-                MatchedMessage = Truncate(matched.Message ?? string.Empty, 500),
+                MatchedMessage = Truncate(
+                    matched.Message ?? string.Empty,
+                    MatchedMessagePreviewLength),
                 ReplyCount = thread.UnreadReplies,
                 CreatedAt = thread.Post?.CreatedAt ?? DateTimeOffset.MinValue,
                 LastReplyAt = thread.LastReplyAt,

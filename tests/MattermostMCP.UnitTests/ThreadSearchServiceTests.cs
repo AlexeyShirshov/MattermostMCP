@@ -419,8 +419,9 @@ public sealed class ThreadSearchServiceTests
         results.Should().ContainSingle();
         results[0].RootMessage.Should().EndWith("...");
         results[0].RootMessage.Length.Should().Be(503);
+        results[0].MatchedMessage.Should().StartWith("needle ");
         results[0].MatchedMessage.Should().EndWith("...");
-        results[0].MatchedMessage.Length.Should().Be(503);
+        results[0].MatchedMessage.Length.Should().Be(43);
     }
 
     // ---------- GetThreadPostsAsync ----------
