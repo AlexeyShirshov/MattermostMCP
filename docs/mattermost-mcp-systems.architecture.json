@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "MattermostMCP: взаимодействие систем",
+    "output": "mattermost-mcp-systems.html",
+    "quality_profile": "showcase",
+    "views": [
+      { "id": "main-path", "label": "Основной путь", "focus": ["client", "server", "mattermost", "postgres"], "note": "Запрос MCP-клиента превращается в REST-вызовы Mattermost и данные из PostgreSQL." },
+      { "id": "identity", "label": "Идентификация", "focus": ["client", "sso", "server"], "note": "SSO выдаёт JWT клиенту, сервер валидирует подпись по JWKS." },
+      { "id": "local-dev", "label": "Локальный стенд", "focus": ["client", "server", "mattermost", "postgres"], "note": "В dev token-proxy подставляет SSO-токен, а Mattermost и PostgreSQL поднимаются в docker compose." }
+    ]
+  },
+  "components": [
+    { "id": "client", "type": "frontend", "label": "MCP-клиент", "sublabel": "Claude Code / IDE", "pos": [60, 340], "size": [160, 68] },
+    { "id": "sso", "type": "security", "label": "SSO Keycloak", "sublabel": "OIDC + JWT", "pos": [435, 80], "size": [170, 64], "tag": "JWKS" },
+    { "id": "server", "type": "backend", "label": "MCP-сервер", "sublabel": "ASP.NET Core :8085", "pos": [430, 340], "size": [180, 72], "tag": "JSON-RPC 2.0" },
+    { "id": "mattermost", "type": "external", "label": "Mattermost API", "sublabel": "REST v4 :8080", "pos": [760, 340], "size": [175, 72] },
+    { "id": "postgres", "type": "database", "label": "PostgreSQL 15", "sublabel": "mmuser/mattermost :5432", "pos": [765, 540], "size": [165, 64] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "docker compose: локальный стенд", "wraps": ["mattermost", "postgres"] }
+  ],
+  "connections": [
+    { "id": "client-to-server", "from": "client", "to": "server", "label": "JSON-RPC / Streamable HTTP", "variant": "emphasis", "fromSide": "right", "toSide": "left", "labelAt": [330, 397] },
+    { "id": "server-to-mattermost", "from": "server", "to": "mattermost", "label": "REST v4 + Bearer", "variant": "emphasis", "fromSide": "right", "toSide": "left" },
+    { "id": "mattermost-to-postgres", "from": "mattermost", "to": "postgres", "label": "SQL", "fromSide": "bottom", "toSide": "top", "labelDy": 44 },
+    { "id": "server-to-sso", "from": "server", "to": "sso", "label": "валидация JWT (JWKS)", "variant": "security", "fromSide": "top", "toSide": "bottom" },
+    { "id": "client-to-sso", "from": "client", "to": "sso", "label": "OAuth 2.0 + PKCE", "variant": "security", "fromSide": "top", "toSide": "top", "via": [[140, 30], [520, 30]] }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Клиент и доступ", "items": ["MCP-клиент шлёт initialize / tools/list / tools/call", "Вход защищён SSO JWT (политика AuthenticatedUser)", "В окружении Local авторизация выключена", "В dev token-proxy (mcp_token_proxy.ps1) подставляет Bearer"] },
+    { "dot": "emerald", "title": "Обработка на сервере", "items": ["McpServer -> ToolsHandler -> ThreadSearchService", "3 инструмента по followed threads: search / list / get", "MattermostClient резолвит userId и каналы"] },
+    { "dot": "amber", "title": "Mattermost и данные", "items": ["REST v4: /users, /teams, /threads, /posts", "Bearer-токен из password-логина (MattermostTokenProvider)", "Пермалинки на {UiBaseUrl}/pl/{postId}", "Постоянное состояние — PostgreSQL 15"] }
+  ]
+}
