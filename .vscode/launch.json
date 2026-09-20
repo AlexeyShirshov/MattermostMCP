@@ -1,12 +1,25 @@
 {
   "version": "0.2.0",
+  "inputs": [
+    {
+      "id": "hostOs",
+      "type": "pickString",
+      "description": "Host OS build folder (matches bin/<os> from Directory.Build.props)",
+      "options": [
+        "linux",
+        "windows",
+        "osx"
+      ],
+      "default": "linux"
+    }
+  ],
   "configurations": [
     {
       "name": "MCP Server (Local)",
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/McpServer/bin/Debug/net10.0/MattermostMCP.McpServer.dll",
+      "program": "${workspaceFolder}/src/McpServer/bin/${input:hostOs}/Debug/net10.0/MattermostMCP.McpServer.dll",
       "args": [],
       "cwd": "${workspaceFolder}/src/McpServer",
       "stopAtEntry": false,
@@ -22,7 +35,8 @@
       "name": "MCP Server (Development)",
       "type": "coreclr",
       "request": "launch",
-      "program": "${workspaceFolder}/src/McpServer/bin/Debug/net10.0/MattermostMCP.McpServer.dll",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/McpServer/bin/${input:hostOs}/Debug/net10.0/MattermostMCP.McpServer.dll",
       "args": [],
       "cwd": "${workspaceFolder}/src/McpServer",
       "stopAtEntry": false,
